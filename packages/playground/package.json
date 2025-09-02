@@ -9,8 +9,7 @@
     "preview": "astro preview"
   },
   "devDependencies": {
-    "astro": "5.5.3",
-    "duskmoonui": "workspace:*"
+    "astro": "5.5.3"
   },
   "dependencies": {
     "@astrojs/react": "4.2.1",
