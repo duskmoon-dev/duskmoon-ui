@@ -1,5 +1,5 @@
-import themes from "daisyui/dist/themes"
-const themeOrder = Object.keys(themes)
+import themes from "duskmoonui/theme/object"
+import themeOrder from "duskmoonui/functions/themeOrder"
 
 function builtinThemes() {
   return themeOrder.map((themeName) => ({
