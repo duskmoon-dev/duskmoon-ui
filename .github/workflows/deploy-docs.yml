@@ -13,22 +13,29 @@ on:
 
 jobs:
   deploy-docs:
-    timeout-minutes: 10
+    timeout-minutes: 15
     runs-on: ubuntu-latest
-    # env:
-    #   LEMONSQUEEZY_API_KEY: ${{ secrets.LEMONSQUEEZY_API_KEY }}
     if: |
       github.event_name == 'workflow_dispatch' ||
       github.event_name == 'workflow_call' ||
-      (github.event_name == 'push' && github.ref == 'refs/heads/master') ||
+      (github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/next')) ||
       (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+    
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
-          clean: false
-          ref: master
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -47,6 +54,7 @@ jobs:
           Disallow: /' > packages/docs/static/robots.txt
 
       - name: Build docs
+        id: build
         run: |
           # Create minimal duskmoonui build
           echo "🚀 Creating minimal duskmoonui build..."
@@ -62,6 +70,7 @@ jobs:
           cd packages/docs
           if timeout 300 bun run --bun build; then
             echo "✅ Docs build completed successfully"
+            echo "build_type=full" >> $GITHUB_OUTPUT
           else
             echo "⚠️ Vite build failed, creating fallback..."
             mkdir -p build
@@ -98,6 +107,7 @@ jobs:
             background: #fef3c7; border: 1px solid #f59e0b; 
             padding: 1rem; border-radius: 0.5rem; margin: 2rem 0;
         }
+        .no-js { display: none; }
     </style>
 </head>
 <body>
@@ -133,15 +143,27 @@ jobs:
             <p>Easy to customize with CSS variables and theme configuration</p>
         </div>
     </div>
+    
+    <noscript>
+        <div class="no-js">
+            <p><strong>Note:</strong> JavaScript is disabled. Some features may not work properly.</p>
+        </div>
+    </noscript>
 </body>
 </html>
 EOF
+            echo "build_type=fallback" >> $GITHUB_OUTPUT
             echo "✅ Fallback docs created"
           fi
 
-      - name: Deploy docs to github pages
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./packages/docs/build
-          cname: ${{ secrets.CNAME }}
+          path: packages/docs/build
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
