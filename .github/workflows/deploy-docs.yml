@@ -77,9 +77,13 @@ jobs:
           echo "🚀 Building docs..."
           cd packages/docs
           
-          # Set environment variables for CI build
-          export PUBLIC_DUSKMOONUI_API_PATH=""
-          export CI=true
+          # Override environment variables for CI build
+          echo "PUBLIC_DUSKMOONUI_API_PATH=" > .env.ci
+          echo "CI=true" >> .env.ci
+          
+          # Use the CI-specific env file
+          mv .env .env.backup
+          mv .env.ci .env
           
           if timeout 300 bun run --bun build; then
             echo "✅ Docs build completed successfully"
@@ -95,8 +99,13 @@ jobs:
             fi
           else
             echo "❌ Vite build failed"
+            # Restore original env file for debugging
+            mv .env.backup .env 2>/dev/null || true
             exit 1
           fi
+          
+          # Restore original env file
+          mv .env.backup .env 2>/dev/null || true
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
