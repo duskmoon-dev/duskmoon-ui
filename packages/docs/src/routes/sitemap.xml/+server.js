@@ -6,11 +6,18 @@ import yaml from "js-yaml"
 export const prerender = true
 
 const fetchProductIds = async () => {
+  // Skip fetching if API path is empty (CI build)
+  if (!PUBLIC_DUSKMOONUI_API_PATH || PUBLIC_DUSKMOONUI_API_PATH.trim() === '') {
+    console.warn("Skipping store data fetch - no API path provided (CI mode)")
+    return []
+  }
+  
   try {
     const response = await fetch(`${PUBLIC_DUSKMOONUI_API_PATH}/data/store.yaml`)
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch store data: ${response.status}`)
+      console.warn(`Failed to fetch store data: ${response.status}`)
+      return []
     }
 
     const yamlText = await response.text()
@@ -18,12 +25,18 @@ const fetchProductIds = async () => {
 
     return yamlData?.productCustomAttributes?.map((product) => String(product.id)) ?? []
   } catch (err) {
-    console.error("Error fetching or processing store data:", err)
+    console.warn("Error fetching or processing store data:", err.message)
     return []
   }
 }
 
 const fetchCompareData = async () => {
+  // Skip fetching if API path is empty (CI build)
+  if (!PUBLIC_DUSKMOONUI_API_PATH || PUBLIC_DUSKMOONUI_API_PATH.trim() === '') {
+    console.warn("Skipping compare data fetch - no API path provided (CI mode)")
+    return {}
+  }
+  
   try {
     const response = await fetch(`${PUBLIC_DUSKMOONUI_API_PATH}/data/compare.yaml`)
 

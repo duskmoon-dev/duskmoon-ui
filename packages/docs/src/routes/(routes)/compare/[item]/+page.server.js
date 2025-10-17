@@ -3,17 +3,24 @@ import yaml from "js-yaml"
 import { error } from "@sveltejs/kit"
 
 async function fetchCompareData() {
+  // Skip fetching if API path is empty (CI build)
+  if (!PUBLIC_DUSKMOONUI_API_PATH || PUBLIC_DUSKMOONUI_API_PATH.trim() === '') {
+    console.warn("Skipping compare data fetch - no API path provided (CI mode)")
+    return null
+  }
+  
   try {
     const response = await fetch(`${PUBLIC_DUSKMOONUI_API_PATH}/data/compare.yaml`)
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch compare data: ${response.status}`)
+      console.warn(`Failed to fetch compare data: ${response.status}`)
+      return null
     }
 
     const yamlFile = await response.text()
     return yaml.load(yamlFile)
   } catch (err) {
-    console.error("Error fetching compare data:", err)
+    console.warn("Error fetching compare data:", err.message)
     return null
   }
 }

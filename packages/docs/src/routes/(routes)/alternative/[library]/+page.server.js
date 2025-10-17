@@ -3,6 +3,12 @@ import yaml from "js-yaml"
 import { error } from "@sveltejs/kit"
 
 const fetchYamlData = async (url) => {
+  // Skip fetching if URL is empty (CI build)
+  if (!url || url.trim() === '') {
+    console.warn("Skipping external API fetch - no URL provided (CI mode)")
+    return null
+  }
+  
   try {
     const response = await fetch(url)
 
@@ -528,7 +534,7 @@ export const entries = async () => {
       .filter((key) => key !== "duskmoonui")
       .map((key) => ({ library: key }))
   } catch (err) {
-    console.error("Error generating entries:", err)
+    console.warn("Error generating entries:", err.message)
     return []
   }
 }
