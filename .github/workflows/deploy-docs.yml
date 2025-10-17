@@ -78,8 +78,8 @@ jobs:
           cd packages/docs
           
           # Set environment variables for CI build
-          echo "PUBLIC_DUSKMOONUI_API_PATH=" > .env
-          echo "CI=true" >> .env
+          export PUBLIC_DUSKMOONUI_API_PATH=""
+          export CI=true
           
           if timeout 300 bun run --bun build; then
             echo "✅ Docs build completed successfully"
