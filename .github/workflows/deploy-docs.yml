@@ -9,11 +9,12 @@ on:
       - next
     paths:
       - "packages/docs/**"
+      - "packages/duskmoonui/**"
       - "CHANGELOG.md"
 
 jobs:
   deploy-docs:
-    timeout-minutes: 15
+    timeout-minutes: 20
     runs-on: ubuntu-latest
     
     permissions:
@@ -32,15 +33,26 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.18.1'
+          cache: 'bun'
+
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.2.8'
 
       - name: Install dependencies
         run: |
-          timeout 300 bun i || {
-            echo "Bun install failed, trying npm..."
-            npm install
-          }
+          echo "🚀 Installing dependencies..."
+          if timeout 300 bun install --frozen-lockfile; then
+            echo "✅ Bun install completed successfully"
+          else
+            echo "⚠️ Bun install failed, trying npm..."
+            timeout 300 npm ci
+          fi
 
       - name: Add robots.txt if not main repo
         if: github.repository != 'duskmoon-dev/duskmoon-ui'
@@ -48,24 +60,35 @@ jobs:
           echo 'User-agent: *
           Disallow: /' > packages/docs/static/robots.txt
 
+      - name: Build duskmoonui package
+        run: |
+          echo "🚀 Building duskmoonui package..."
+          cd packages/duskmoonui
+          if timeout 300 bun run --bun build; then
+            echo "✅ duskmoonui build completed successfully"
+          else
+            echo "❌ duskmoonui build failed"
+            exit 1
+          fi
+
       - name: Build docs
         id: build
         run: |
-          # Create minimal duskmoonui build
-          echo "🚀 Creating minimal duskmoonui build..."
-          rm -rf packages/duskmoonui/theme packages/duskmoonui/duskmoonui.css packages/duskmoonui/themes.css
-          mkdir -p packages/duskmoonui/theme
-          cp packages/duskmoonui/functions/themePlugin.js packages/duskmoonui/theme/index.js
-          echo "/* daisyUI - Minimal Build for CI */" > packages/duskmoonui/duskmoonui.css
-          echo "/* daisyUI - Minimal Build for CI */" > packages/duskmoonui/themes.css
-          echo "✅ Minimal duskmoonui build completed"
-          
-          # Try to build docs
           echo "🚀 Building docs..."
           cd packages/docs
+          
           if timeout 300 bun run --bun build; then
             echo "✅ Docs build completed successfully"
             echo "build_type=full" >> $GITHUB_OUTPUT
+            
+            # Verify build output
+            if [ -d "build" ] && [ -f "build/index.html" ]; then
+              echo "✅ Build output verified"
+              ls -la build/
+            else
+              echo "❌ Build output verification failed"
+              exit 1
+            fi
           else
             echo "⚠️ Vite build failed, creating fallback..."
             mkdir -p build
@@ -75,7 +98,7 @@ jobs:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>daisyUI - Component Library</title>
+    <title>duskmoonui - Component Library</title>
     <meta name="description" content="Beautiful UI components built with Tailwind CSS">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -107,7 +130,7 @@ jobs:
 </head>
 <body>
     <div class="hero">
-        <h1>daisyUI</h1>
+        <h1>duskmoonui</h1>
         <p>Beautiful UI components built with Tailwind CSS</p>
         <div class="buttons">
             <a href="https://github.com/duskmoon-dev/duskmoon-ui" class="btn">View on GitHub</a>
@@ -162,3 +185,55 @@ EOF
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  build-docker:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    needs: deploy-docs
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/next')
+    
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Download Pages artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: ./site
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
