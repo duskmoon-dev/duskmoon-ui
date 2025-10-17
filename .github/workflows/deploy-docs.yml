@@ -92,7 +92,7 @@ jobs:
           else
             echo "⚠️ Vite build failed, creating fallback..."
             mkdir -p build
-            cat > build/index.html << 'EOF'
+            cat > build/index.html << 'HTML_EOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -169,7 +169,7 @@ jobs:
     </noscript>
 </body>
 </html>
-EOF
+HTML_EOF
             echo "build_type=fallback" >> $GITHUB_OUTPUT
             echo "✅ Fallback docs created"
           fi
