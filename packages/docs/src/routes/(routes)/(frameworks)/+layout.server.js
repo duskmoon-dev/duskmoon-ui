@@ -19,11 +19,21 @@ async function fetchFrameworksData() {
 
 export async function load() {
   const frameworksData = await fetchFrameworksData()
-  const testimonialsResponse = await fetch("https://img.duskmoonui.com/generated/testimonials.json")
-  const testimonials = await testimonialsResponse.json()
+  let testimonials = []
+  
+  try {
+    const testimonialsResponse = await fetch("https://img.duskmoonui.com/generated/testimonials.json")
+    if (testimonialsResponse.ok) {
+      testimonials = await testimonialsResponse.json()
+    } else {
+      console.warn(`Failed to fetch testimonials: ${testimonialsResponse.status}`)
+    }
+  } catch (error) {
+    console.warn(`Error fetching testimonials: ${error.message}`)
+  }
 
   return {
     testimonials,
-    frameworksData: frameworksData.map(({ name, logo }) => ({ name, logo })),
+    frameworksData: frameworksData ? frameworksData.map(({ name, logo }) => ({ name, logo })) : [],
   }
 }

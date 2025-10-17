@@ -7,14 +7,15 @@ const fetchYamlData = async (url) => {
     const response = await fetch(url)
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch data: ${response.status}`)
+      console.warn(`Failed to fetch data from ${url}: ${response.status}`)
+      return null
     }
 
     const yamlText = await response.text()
     return yaml.load(yamlText)
   } catch (e) {
-    console.error(`Error loading or parsing YAML from ${url}`, e)
-    throw error(500, "Server configuration error: Could not load data")
+    console.warn(`Error loading or parsing YAML from ${url}:`, e.message)
+    return null
   }
 }
 
@@ -387,13 +388,13 @@ export const load = async ({ params }) => {
       fetchCompareData(),
     ])
 
-    const stringsData = alternativeData.strings
+    const stringsData = alternativeData?.strings
 
     if (!compareData?.data || !compareData.attributeRules || !stringsData) {
-      console.error(
-        "YAML data structure error: Missing 'compare.data', 'compare.attributeRules', or 'alternative.strings'",
+      console.warn(
+        "YAML data structure error: Missing 'compare.data', 'compare.attributeRules', or 'alternative.strings'. Using fallback data.",
       )
-      throw error(500, "Server configuration error: Invalid data structure")
+      throw error(404, "Comparison data not available")
     }
 
     validateStringsData(stringsData)

@@ -28,14 +28,15 @@ const fetchCompareData = async () => {
     const response = await fetch(`${PUBLIC_DUSKMOONUI_API_PATH}/data/compare.yaml`)
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch compare data: ${response.status}`)
+      console.warn(`Failed to fetch compare data: ${response.status}`)
+      return {}
     }
 
     const yamlFile = await response.text()
     const yamlData = yaml.load(yamlFile)
     return yamlData?.data ?? {}
   } catch (err) {
-    console.error("Error fetching or parsing compare data:", err)
+    console.warn("Error fetching or parsing compare data:", err.message)
     return {}
   }
 }
@@ -71,7 +72,11 @@ export const GET = async () => {
     alternativeLibraries = generateAlternativeSlugs(frameworks)
     productIds = await fetchProductIds()
   } catch (err) {
-    throw error(500, `Could not load data for sitemap: ${err.message}`)
+    console.warn("Could not load some data for sitemap, using fallback:", err.message)
+    // Use empty arrays as fallback
+    comparePages = []
+    alternativeLibraries = []
+    productIds = []
   }
 
   return await sitemap.response({
