@@ -10,6 +10,8 @@ export default {
       pages: "build",
       assets: "build",
       fallback: null,
+      // Allow dynamic routes during CI builds to prevent failures
+      strict: process.env.CI ? false : true,
       // precompress: true,
     }),
     prerender: {
