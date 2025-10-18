@@ -2,6 +2,9 @@ import { PUBLIC_DUSKMOONUI_API_PATH } from "$env/static/public"
 import { error } from "@sveltejs/kit"
 import { slugify } from "$lib/util"
 
+// Disable prerendering in CI mode since we have no data to generate entries
+export const prerender = process.env.CI ? false : true
+
 export async function entries() {
   // Skip external API calls during CI/build - return empty entries
   if (process.env.CI || !PUBLIC_DUSKMOONUI_API_PATH) {
