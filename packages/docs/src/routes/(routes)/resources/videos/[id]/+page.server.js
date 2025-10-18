@@ -2,6 +2,29 @@ import { PUBLIC_DUSKMOONUI_API_PATH } from "$env/static/public"
 import { error } from "@sveltejs/kit"
 import { slugify } from "$lib/util"
 
+export async function entries() {
+  // Skip external API calls during CI/build - return empty entries
+  if (process.env.CI || !PUBLIC_DUSKMOONUI_API_PATH) {
+    return []
+  }
+
+  try {
+    const response = await fetch(`${PUBLIC_DUSKMOONUI_API_PATH}/api/youtube.json`)
+    if (!response.ok) {
+      console.warn(`Failed to fetch videos: ${response.status}`)
+      return []
+    }
+    const videos = await response.json()
+
+    return videos.map((video) => ({
+      id: `${slugify(video.snippet.title)}-${slugify(video.id)}`
+    }))
+  } catch (err) {
+    console.warn("Error generating video entries:", err.message)
+    return []
+  }
+}
+
 export async function load({ params }) {
   // Skip external API calls during CI/build
   if (process.env.CI || !PUBLIC_DUSKMOONUI_API_PATH) {
