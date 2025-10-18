@@ -9,7 +9,8 @@ export default {
     adapter: adapter({
       pages: "build",
       assets: "build",
-      fallback: null,
+      // Use fallback in CI mode to handle dynamic routes without entries
+      fallback: process.env.CI ? "index.html" : null,
       // Allow dynamic routes during CI builds to prevent failures
       strict: process.env.CI ? false : true,
       // precompress: true,

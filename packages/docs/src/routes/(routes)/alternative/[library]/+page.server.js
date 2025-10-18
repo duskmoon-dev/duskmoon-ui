@@ -387,7 +387,8 @@ const filterSections = (sections, duskmoonUIData, libraryData, attributeRules, i
     .filter((section) => section !== null) // Remove null entries
 }
 
-export const prerender = true
+// In CI mode, disable prerendering since we have no data to generate entries
+export const prerender = process.env.CI ? false : true
 
 export const load = async ({ params }) => {
   try {
