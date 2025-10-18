@@ -3,6 +3,11 @@ import { error } from "@sveltejs/kit"
 import { slugify } from "$lib/util"
 
 export async function load({ params }) {
+  // Skip external API calls during CI/build
+  if (process.env.CI || !PUBLIC_DUSKMOONUI_API_PATH) {
+    throw error(404, "Video not found")
+  }
+
   try {
     // Fetch videos from API endpoint
     const response = await fetch(`${PUBLIC_DUSKMOONUI_API_PATH}/api/youtube.json`)

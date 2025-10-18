@@ -3,6 +3,16 @@ import { error } from "@sveltejs/kit"
 import yaml from "js-yaml"
 
 const fetchStoreData = async () => {
+  // Skip external API calls during CI/build
+  if (process.env.CI || !PUBLIC_DUSKMOONUI_API_PATH) {
+    return {
+      tech: [],
+      techFilters: [],
+      productCustomAttributes: [],
+      futureProducts: []
+    }
+  }
+
   try {
     const response = await fetch(`${PUBLIC_DUSKMOONUI_API_PATH}/data/store.yaml`)
 

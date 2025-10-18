@@ -1,5 +1,10 @@
 import { PUBLIC_DUSKMOONUI_API_PATH } from "$env/static/public"
 export async function load() {
+  // Skip external API calls during CI/build
+  if (process.env.CI || !PUBLIC_DUSKMOONUI_API_PATH) {
+    return { videos: [] }
+  }
+
   try {
     const response = await fetch(`${PUBLIC_DUSKMOONUI_API_PATH}/api/youtube.json`)
     if (!response.ok) {

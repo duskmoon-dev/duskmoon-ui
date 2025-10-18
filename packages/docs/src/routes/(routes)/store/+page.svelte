@@ -23,28 +23,41 @@
     return false
   }
   const fetchDiscount = (async () => {
-    // Fetch both discount types
-    const [shorttimeDiscountResponse, specialDiscountResponse] = await Promise.all([
-      fetch(`${PUBLIC_DUSKMOONUI_API_PATH}/api/discount_shorttime.json`),
-      fetch(`${PUBLIC_DUSKMOONUI_API_PATH}/api/discount_special.json`),
-    ])
-
-    // Parse the JSON responses
-    const shorttimeDiscount = await shorttimeDiscountResponse.json()
-    const specialDiscount = await specialDiscountResponse.json()
-
-    // Check if special discount exists and is still valid
-    if (isDiscountValid(specialDiscount)) {
-      return specialDiscount
+    // Skip external API calls during CI/build
+    if (typeof process !== 'undefined' && process.env.CI) {
+      return null
+    }
+    if (!PUBLIC_DUSKMOONUI_API_PATH || PUBLIC_DUSKMOONUI_API_PATH.trim() === '') {
+      return null
     }
 
-    // Check if short-time discount exists and is still valid
-    if (isDiscountValid(shorttimeDiscount)) {
-      return shorttimeDiscount
-    }
+    try {
+      // Fetch both discount types
+      const [shorttimeDiscountResponse, specialDiscountResponse] = await Promise.all([
+        fetch(`${PUBLIC_DUSKMOONUI_API_PATH}/api/discount_shorttime.json`),
+        fetch(`${PUBLIC_DUSKMOONUI_API_PATH}/api/discount_special.json`),
+      ])
 
-    // If neither discount is valid, return null or handle accordingly
-    return null
+      // Parse the JSON responses
+      const shorttimeDiscount = await shorttimeDiscountResponse.json()
+      const specialDiscount = await specialDiscountResponse.json()
+
+      // Check if special discount exists and is still valid
+      if (isDiscountValid(specialDiscount)) {
+        return specialDiscount
+      }
+
+      // Check if short-time discount exists and is still valid
+      if (isDiscountValid(shorttimeDiscount)) {
+        return shorttimeDiscount
+      }
+
+      // If neither discount is valid, return null or handle accordingly
+      return null
+    } catch (error) {
+      console.warn("Failed to fetch discount data:", error)
+      return null
+    }
   })()
 
   function convertCurrency(number) {
