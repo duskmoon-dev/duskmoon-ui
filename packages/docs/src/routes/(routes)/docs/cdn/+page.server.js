@@ -29,15 +29,28 @@ const getCssFiles = (dirPath, checkedCondition) => {
   }))
 }
 
-const baseFiles = getCssFiles(join(basePath, "base"), () => true)
-const componentFiles = getCssFiles(join(basePath, "components"), (file) =>
+const getCssFilesSafe = (dirPath, checkedCondition) => {
+  try {
+    return readdirSync(dirPath).filter((file) => extname(file) === ".css").map((file) => ({
+      path: join(dirPath.replace(basePath, ""), file),
+      name: basename(file, ".css"),
+      checked: checkedCondition(file),
+    }))
+  } catch (error) {
+    console.warn(`Directory ${dirPath} does not exist, skipping`)
+    return []
+  }
+}
+
+const baseFiles = getCssFilesSafe(join(basePath, "base"), () => true)
+const componentFiles = getCssFilesSafe(join(basePath, "components"), (file) =>
   ["button.css", "toggle.css", "checkbox.css", "input.css", "select.css", "menu.css"].includes(
     file,
   ),
 )
-const utilityFiles = getCssFiles(join(basePath, "utilities"), (file) => [].includes(file))
-const colorFiles = getCssFiles(join(basePath, "colors"), (file) => [].includes(file))
-const themeFiles = getCssFiles(join(basePath, "theme"), (file) => ["light.css"].includes(file))
+const utilityFiles = getCssFilesSafe(join(basePath, "utilities"), (file) => [].includes(file))
+const colorFiles = getCssFilesSafe(join(basePath, "colors"), (file) => [].includes(file))
+const themeFiles = getCssFilesSafe(join(basePath, "theme"), (file) => ["light.css"].includes(file))
 
 const files = [...baseFiles, ...componentFiles, ...utilityFiles, ...colorFiles, ...themeFiles]
 

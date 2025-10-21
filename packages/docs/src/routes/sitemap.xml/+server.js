@@ -72,10 +72,23 @@ const processPath = (entry) => {
   return updatedEntry
 }
 
+// Function to get component slugs from component directories
+const getComponentSlugs = async () => {
+  try {
+    // The super-sitemap library should automatically handle the component directories
+    // since they are actual directories, not dynamic routes
+    return []
+  } catch (err) {
+    console.warn("Error loading component slugs:", err.message)
+    return []
+  }
+}
+
 export const GET = async () => {
   let productIds = []
   let comparePages = []
   let alternativeLibraries = []
+  let componentSlugs = []
 
   try {
     const compareData = await fetchCompareData()
@@ -84,17 +97,26 @@ export const GET = async () => {
     comparePages = generateCompareSlugs(frameworks)
     alternativeLibraries = generateAlternativeSlugs(frameworks)
     productIds = await fetchProductIds()
+    componentSlugs = await getComponentSlugs()
   } catch (err) {
     console.warn("Could not load some data for sitemap, using fallback:", err.message)
     // Use empty arrays as fallback
     comparePages = []
     alternativeLibraries = []
     productIds = []
+    componentSlugs = []
   }
 
   return await sitemap.response({
     origin: "https://duskmoonui.com",
-    additionalPaths: ["/llms.txt"],
+    additionalPaths: [
+      "/llms.txt",
+      "/docs/",
+      "/components/",
+      "/blog/",
+      "/store/",
+      "/resources/"
+    ],
     excludeRoutePatterns: [
       ".*\\/design$",
       ".*\\/accessibility$",
