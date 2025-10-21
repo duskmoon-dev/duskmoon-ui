@@ -8,9 +8,14 @@
   "scripts": {
     "dev": "vite dev --port 3000 --open",
     "build": "NODE_ENV=production vite build --logLevel error",
-    "preview": "bun run --bun build && vite preview --port 3000 --open",
+    "build:ci": "NODE_ENV=production CI=true vite build --logLevel error",
+    "preview": "bun run build && vite preview --port 3000 --open",
+    "preview:ci": "bun run build:ci && vite preview --port 3000 --open",
     "stats": "open build/stats.html",
-    "langdiff": "bun src/lib/scripts/compare-translate-files.js"
+    "build:analyze": "NODE_ENV=production vite build && open build/stats.html",
+    "langdiff": "bun src/lib/scripts/compare-translate-files.js",
+    "check": "bun run build && ls -la build",
+    "clean": "rm -rf build .svelte-kit"
   },
   "devDependencies": {
     "@jsdevtools/rehype-toc": "3.0.2",
