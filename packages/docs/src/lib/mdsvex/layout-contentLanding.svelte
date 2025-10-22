@@ -10,8 +10,21 @@
   let { title, desc, children } = $props()
   async function fetchStats() {
     if (!browser) return
-    const response = await fetch(`${PUBLIC_DUSKMOONUI_API_PATH}/stats.json`)
-    return await response.json()
+    // Skip external API calls during CI/build
+    if (typeof process !== 'undefined' && process.env.CI) {
+      return {}
+    }
+    if (!PUBLIC_DUSKMOONUI_API_PATH || PUBLIC_DUSKMOONUI_API_PATH.trim() === '') {
+      return {}
+    }
+    
+    try {
+      const response = await fetch(`${PUBLIC_DUSKMOONUI_API_PATH}/stats.json`)
+      return await response.json()
+    } catch (error) {
+      console.warn("Failed to fetch stats:", error)
+      return {}
+    }
   }
 </script>
 

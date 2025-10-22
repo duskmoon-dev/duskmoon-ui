@@ -5,7 +5,7 @@
   "description": "duskmoonui - The Tailwind CSS Component Library",
   "author": "Pouya Saadeghi",
   "license": "MIT",
-  "homepage": "https://duskmoonui.com",
+  "homepage": "https://github.com/duskmoon-dev/duskmoon-ui.git",
   "repository": {
     "type": "git",
     "url": "https://github.com/duskmoon-dev/duskmoon-ui.git",
@@ -72,7 +72,9 @@
     }
   },
   "scripts": {
-    "build": "bun build.js"
+    "build": "bun build.js",
+    "build:simple": "bun build-simple.js",
+    "prebuild": "bun prebuild.js"
   },
   "dependencies": {
     "culori": "^4.0.2",

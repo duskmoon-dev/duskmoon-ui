@@ -2,6 +2,11 @@ import { PUBLIC_DUSKMOONUI_API_PATH } from "$env/static/public"
 import yaml from "js-yaml"
 
 export async function load() {
+  // Skip external API calls during CI/build
+  if (process.env.CI || !PUBLIC_DUSKMOONUI_API_PATH) {
+    return { roadmap: [] }
+  }
+
   try {
     const response = await fetch(`${PUBLIC_DUSKMOONUI_API_PATH}/data/roadmap.yaml`)
 

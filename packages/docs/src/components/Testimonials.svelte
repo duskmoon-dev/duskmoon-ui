@@ -49,7 +49,7 @@
 <div
   class="mx-auto max-w-7xl gap-8 px-10 md:columns-2 lg:columns-3 xl:columns-3 max-md:[&>*:nth-child(n+9)]:hidden"
 >
-  {#each [...items.testimonials]
+  {#each (items?.testimonials || [])
     .map((t, i) => ({ ...t, originalIndex: i }))
     .sort(() => Math.random() - 0.5)
     .slice(0, limit) as testimonial, index}
@@ -71,7 +71,7 @@
             >
               <div
                 class="size-12 rounded-full"
-                style={`background-image: url('https://img.duskmoonui.com/generated/x.webp?${items.generated_at}');
+                style={`background-image: url('${items?.generated_at ? `https://img.duskmoonui.com/generated/x.webp?${items.generated_at}` : ''}');
                        background-size: ${spriteMetadata.imagesPerRow * 48}px auto;
                        background-repeat: no-repeat;
                        background-position: ${getBackgroundPosition(testimonial.originalIndex)};`}

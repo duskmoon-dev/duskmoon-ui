@@ -2,51 +2,138 @@ name: "📘 Deploy docs"
 
 on:
   workflow_dispatch:
-  workflow_call:
+    inputs:
+      deploy_to_production:
+        description: 'Deploy to GitHub Pages (only works on main branches)'
+        required: false
+        type: boolean
+        default: false
   push:
     branches:
       - master
+      - next
     paths:
       - "packages/docs/**"
+      - "packages/duskmoonui/**"
       - "CHANGELOG.md"
+  pull_request:
+    branches:
+      - master
+      - next
+    paths:
+      - "packages/docs/**"
+      - "packages/duskmoonui/**"
+  # Automatic deployment every 6 hours
+  schedule:
+    - cron: '0 */6 * * *'
 
 jobs:
-  deploy-docs:
-    timeout-minutes: 10
+  # Build job that outputs build artifacts
+  build:
+    timeout-minutes: 15
     runs-on: ubuntu-latest
-    # env:
-    #   LEMONSQUEEZY_API_KEY: ${{ secrets.LEMONSQUEEZY_API_KEY }}
-    if: |
-      github.event_name == 'workflow_dispatch' ||
-      github.event_name == 'workflow_call' ||
-      (github.event_name == 'push' && github.ref == 'refs/heads/master') ||
-      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+    outputs:
+      build-path: ${{ steps.build.outputs.build-path }}
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
-          clean: false
-          ref: master
+          fetch-depth: 0
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.2.8'
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+            node_modules/.cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
 
       - name: Install dependencies
-        run: bun i
+        run: bun install --frozen-lockfile
 
-      - name: Add robots.txt if not main repo
-        if: github.repository != 'duskmoon-dev/duskmoon-ui'
+      - name: Build duskmoonui package
         run: |
-          echo 'User-agent: *
-          Disallow: /' > packages/docs/static/robots.txt
+          echo "🚀 Building duskmoonui package..."
+          cd packages/duskmoonui
+          bun run build
+          echo "✅ duskmoonui build completed"
 
       - name: Build docs
-        run: bun run --bun build:docs
+        id: build
+        run: |
+          echo "🚀 Building docs..."
+          cd packages/docs
 
-      - name: Deploy docs to github pages
-        uses: peaceiris/actions-gh-pages@v4
+          # Set environment for GitHub Pages
+          echo "NODE_ENV=production" > .env.production
+          echo "CI=true" >> .env.production
+
+          # Build with production optimizations
+          bun run build
+
+          echo "build-path=packages/docs/build" >> $GITHUB_OUTPUT
+
+      - name: Build verification
+        run: |
+          echo "🔍 Verifying build output..."
+          cd packages/docs
+          if [ -d "build" ] && [ -f "build/index.html" ]; then
+            echo "✅ Build verification successful"
+            ls -la build/
+            du -sh build/ | head -5
+          else
+            echo "❌ Build verification failed"
+            exit 1
+          fi
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./packages/docs/build
-          cname: ${{ secrets.CNAME }}
+          name: build-files
+          path: packages/docs/build
+          retention-days: 1
+
+  # Deploy job (only runs on main branches or manual deployment)
+  deploy:
+    if: |
+      github.event_name != 'pull_request' && (
+        github.ref == 'refs/heads/master' ||
+        github.ref == 'refs/heads/next' ||
+        github.event.inputs.deploy_to_production == 'true'
+      )
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-files
+          path: build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
