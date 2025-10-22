@@ -39,7 +39,7 @@ export const nameGenerator = () => {
     "crazy",
     "cringe",
     "cyber",
-    "daisy",
+    "duskmoon",
     "dancing",
     "dark",
     "dead",

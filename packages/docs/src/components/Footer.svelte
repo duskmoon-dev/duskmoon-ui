@@ -367,16 +367,16 @@
         <a
           target="_blank"
           rel="noopener, noreferrer"
-          href="https://github.com/Dzoukr/Feliz.DaisyUI"
+          href="https://github.com/Dzoukr/Feliz.duskmoonUI"
           class="link link-hover group"
         >
-          Feliz.DaisyUI (F#)
+          Feliz.duskmoonUI (F#)
           {@html newtabicon}
         </a>
         <a
           target="_blank"
           rel="noopener, noreferrer"
-          href="https://github.com/phcurado/daisy_ui_components"
+          href="https://github.com/phcurado/duskmoon_ui_components"
           class="link link-hover group"
         >
           Phcurado (Phoenix)

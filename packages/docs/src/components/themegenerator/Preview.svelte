@@ -155,7 +155,7 @@
       sizes: [""],
       label: "",
       content:
-        "<div class='text-xs'>Daisy grows happily under the warm sunlight</div><div class='text-sm'>Daisy grows happily under the warm sunlight</div><div class='text-md'>Daisy grows happily under the warm sunlight</div><div class='text-lg'>Daisy grows happily under the warm sunlight</div><div class='text-xl font-semibold'>Daisy grows happily under the warm sunlight</div><div class='text-2xl font-bold'>Daisy grows happily under the warm sunlight</div><div class='text-3xl font-black'>Daisy grows happily under the warm sunlight</div>",
+        "<div class='text-xs'>Duskmoon shines serenely in the twilight sky</div><div class='text-sm'>Duskmoon shines serenely in the twilight sky</div><div class='text-md'>Duskmoon shines serenely in the twilight sky</div><div class='text-lg'>Duskmoon shines serenely in the twilight sky</div><div class='text-xl font-semibold'>Duskmoon shines serenely in the twilight sky</div><div class='text-2xl font-bold'>Duskmoon shines serenely in the twilight sky</div><div class='text-3xl font-black'>Duskmoon shines serenely in the twilight sky</div>",
     },
   }
   let sliderValue = $state(50)

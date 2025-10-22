@@ -6,14 +6,35 @@ let
 in
 {
   env.GREET = "Duskmoon UI";
+  env.NODE_ENV = "development";
 
   packages = [
+    # Core tools
     pkgs-stable.git
     pkgs-stable.figlet
     pkgs-stable.lolcat
+
+    # File watching and build tools
     pkgs-stable.watchman
     pkgs-stable.inotify-tools
+
+    # JavaScript/TypeScript ecosystem
+    pkgs-stable.nodejs_20  # Required for docs engine (>=20.18.1)
+    pkgs-stable.bun
+
+    # CSS/Styling tools
     pkgs-stable.tailwindcss_4
+
+    # Code quality and formatting
+    pkgs-stable.prettier
+    pkgs-stable.oxlint
+
+    # Build tools (for SvelteKit docs)
+    pkgs-stable.nodePackages.vite
+
+    # Additional useful tools
+    pkgs-stable.curl  # For API testing and downloads
+    pkgs-stable.jq    # For JSON processing in scripts
   ];
 
   languages.javascript.enable = true;
@@ -27,6 +48,15 @@ in
 
   enterShell = ''
     hello
+    echo ""
+    echo "🚀 Duskmoon UI Development Environment"
+    echo "📦 Available commands:"
+    echo "  bun run dev       - Start development server"
+    echo "  bun run build     - Build for production"
+    echo "  bun run test      - Run tests"
+    echo "  bun run lint      - Run linter"
+    echo "  bun run format    - Format code"
+    echo ""
   '';
 
 }

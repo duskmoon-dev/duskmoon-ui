@@ -9,11 +9,6 @@ on:
         options:
           - "--release-as patch"
           - "--release-as minor"
-  push:
-    branches:
-      - master
-    paths:
-      - "packages/duskmoonui/**"
 
 jobs:
   run-tests:
@@ -34,7 +29,6 @@ jobs:
         with:
           fetch-depth: 1
           clean: false
-          ref: master
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2

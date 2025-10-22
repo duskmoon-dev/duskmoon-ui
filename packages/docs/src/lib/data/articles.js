@@ -30,17 +30,17 @@ export const articles = [
     link: "https://wweb.dev/weekly/85/",
   },
   {
-    title: "DaisyUI - Tailwind components",
+    title: "duskmoonUI - Tailwind components",
     site: "flaming.codes",
-    link: "https://flaming.codes/posts/boostrap-tailwind-alternative-with-daisy-ui",
+    link: "https://flaming.codes/posts/boostrap-tailwind-alternative-with-duskmoon-ui",
   },
   {
-    title: "How to Setup React Typescript With Snowpack and Daisy UI",
+    title: "How to Setup React Typescript With Snowpack and duskmoonUI",
     site: "rockyourcode",
     link: "https://www.rockyourcode.com/how-to-setup-react-typescript-with-snowpack-and-duskmoonui/",
   },
   {
-    title: "DaisyUI : un plugin gratuit avec de nombreux composants pour Tailwind CSS",
+    title: "duskmoonUI : un plugin gratuit avec de nombreux composants pour Tailwind CSS",
     site: "Siecle Digital",
     link: "https://siecledigital.fr/2021/05/29/duskmoonui-plugin-gratuit-avec-composants-tailwind-css-a/",
   },
@@ -50,7 +50,7 @@ export const articles = [
     link: "https://speckyboy.com/weekly-news-for-designers-594/",
   },
   {
-    title: "DaisyUI — Free UI components plugin for Tailwind CSS",
+    title: "duskmoonUI — Free UI components plugin for Tailwind CSS",
     site: "dailydev",
     link: "https://app.daily.dev/posts/-4OPGw0te",
   },
@@ -60,29 +60,29 @@ export const articles = [
     link: "https://future-architect.github.io/articles/20211124a/",
   },
   {
-    title: "Adding Tailwind and Daisy UI to SvelteKit",
-    site: "Adding Tailwind and Daisy UI to SvelteKit",
-    link: "https://dev.to/brewhousedigital/adding-tailwind-and-daisy-ui-to-sveltekit-2hk5",
+    title: "Adding Tailwind and duskmoonUI to SvelteKit",
+    site: "Adding Tailwind and duskmoonUI to SvelteKit",
+    link: "https://dev.to/brewhousedigital/adding-tailwind-and-duskmoon-ui-to-sveltekit-2hk5",
   },
   {
-    title: "Building React Components With DaisyUI",
+    title: "Building React Components With duskmoonUI",
     site: "Open Replay",
     link: "https://blog.openreplay.com/building-react-components-with-duskmoonui/",
   },
   {
-    title: "DaisyUI - Make Tailwind components with ease!",
+    title: "duskmoonUI - Make Tailwind components with ease!",
     site: "James Perkins",
     link: "https://www.jamesperkins.dev/post/duskmoonui-make-tailwind-components-with-ease/",
   },
   {
-    title: "DaisyUI - Free Vue UI Components for Tailwind CSS",
+    title: "duskmoonUI - Free Vue UI Components for Tailwind CSS",
     site: "Morioh",
     link: "https://morioh.com/a/350ca835203f/duskmoonui-free-vue-ui-components-for-tailwind-css",
   },
   {
-    title: "Daisy UI 3.0 Released: New components, themes, improvements, and more!",
+    title: "duskmoonUI 3.0 Released: New components, themes, improvements, and more!",
     site: "SHOWWCASE",
-    link: "https://www.showwcase.com/show/35362/daisy-ui-30-released-new-components-themes-improvements-and-more",
+    link: "https://www.showwcase.com/show/35362/duskmoon-ui-30-released-new-components-themes-improvements-and-more",
   },
   {
     title: "How to install duskmoonUI in Laravel Vite",

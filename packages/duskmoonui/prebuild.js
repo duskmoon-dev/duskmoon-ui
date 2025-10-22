@@ -9,7 +9,7 @@ async function prebuild() {
   await fs.mkdir("theme", { recursive: true })
   
   // Create a basic themePlugin.js
-  const themePlugin = `// daisyUI Theme Plugin
+  const themePlugin = `// duskmoonUI Theme Plugin
 import plugin from 'tailwindcss/plugin'
 import { content } from './variables.js'
 
@@ -35,7 +35,7 @@ export default plugin(function ({ addComponents, theme }) {
   await fs.writeFile("theme/index.js", "export { default } from './themePlugin.js'")
   
   // Create basic variables.js
-  const variables = `// daisyUI Variables
+  const variables = `// duskmoonUI Variables
 export const content = {}
 export const colors = {}
 export const themes = {}`
@@ -43,13 +43,13 @@ export const themes = {}`
   await fs.writeFile("theme/variables.js", variables)
   
   // Create basic CSS files
-  const basicCSS = `/* daisyUI - Essential Styles */`
+  const basicCSS = `/* duskmoonUI - Essential Styles */`
   
   await fs.writeFile("duskmoonui.css", basicCSS)
   await fs.writeFile("themes.css", basicCSS)
   
   // Update index.js
-  const index = `// daisyUI
+  const index = `// duskmoonUI
 export { default } from './theme/index.js'
 export * from './theme/variables.js'`
   

@@ -1,11 +1,11 @@
 export const courses = [
   {
-    title: "Tailwind + DaisyUI",
+    title: "Tailwind + duskmoonUI",
     site: "Fireship.io",
     link: "https://fireship.io/courses/sveltekit/setup-tailwind/",
   },
   {
-    title: "Building with SvelteKit and GraphCMS - Styling with Tailwind and DaisyUI",
+    title: "Building with SvelteKit and GraphCMS - Styling with Tailwind and duskmoonUI",
     site: "Netlify",
     link: "https://explorers.netlify.com/learn/building-with-sveltekit-and-graphcms/styling-with-tailwind-and-duskmoonui",
   },
@@ -37,6 +37,6 @@ export const courses = [
   {
     title: "Building a React Admin Panel with refine and duskmoonUI",
     site: "Refine.dev",
-    link: "https://refine.dev/blog/daisy-ui-react-admin-panel/",
+    link: "https://refine.dev/blog/duskmoon-ui-react-admin-panel/",
   },
 ]

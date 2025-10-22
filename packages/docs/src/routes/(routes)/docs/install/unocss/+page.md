@@ -9,7 +9,7 @@ desc: How to install Tailwind CSS and duskmoonUI in a UnoCSS project
 
 > :WARNING:
 >
-> This guide uses The community (unofficial) package [@ameinhardt/unocss-preset-daisy](https://github.com/ameinhardt/unocss-preset-daisy) as UnoCSS preset for duskmoonUI. <br/>Not all duskmoonUI components are supported yet, some class names may not work as expected.<br/>[See the repo](https://github.com/ameinhardt/unocss-preset-daisy) for more information.
+> This guide uses The community (unofficial) package [@ameinhardt/unocss-preset-duskmoon](https://github.com/ameinhardt/unocss-preset-duskmoon) as UnoCSS preset for duskmoonUI. <br/>Not all duskmoonUI components are supported yet, some class names may not work as expected.<br/>[See the repo](https://github.com/ameinhardt/unocss-preset-duskmoon) for more information.
 
 ### 1. Create a new Vite project
 
@@ -19,10 +19,10 @@ Create a new Vite project in the current directory
 npm create vite@latest ./ -- --template vanilla
 ```
 
-### 2. Install UnoCSS, duskmoonUI and unocss-preset-daisy
+### 2. Install UnoCSS, duskmoonUI and unocss-preset-duskmoon
 
 ```sh:Terminal
-npm install unocss duskmoonui @ameinhardt/unocss-preset-daisy
+npm install unocss duskmoonui @ameinhardt/unocss-preset-duskmoon
 ```
 
 Add UnoCSS to Vite config
@@ -45,7 +45,7 @@ Create a `unocss.config.js` file in the root of your project and add the followi
 ```js:unocss.config.js
 import { defineConfig } from "unocss";
 import presetWind4 from "@unocss/preset-wind4";
-import { presetDaisy } from "@ameinhardt/unocss-preset-daisy";
+import { presetDuskmoon } from "@ameinhardt/unocss-preset-duskmoon";
 
 export default defineConfig({
   content: {
@@ -53,7 +53,7 @@ export default defineConfig({
       include: ["src/**/*.{js,ts}"],
     },
   },
-  presets: [presetDaisy(), presetWind4()],
+  presets: [presetDuskmoon(), presetWind4()],
 });
 ```
 

@@ -80,7 +80,7 @@ root scrollbar gutter is excluded. `daisy-` prefix is used for all duskmoonUI cl
   root: ":root";
   include: ;
   exclude: rootscrollgutter, checkbox;
-  prefix: daisy-;
+  prefix: duskmoon-;
   logs: false;
 }
 ```

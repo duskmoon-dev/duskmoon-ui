@@ -116,7 +116,7 @@ These CSS variables can be customized for each themes. Read more about [color na
 
 For advanced use: These CSS variables are being used internally for a specific components. You probably won't need to customize them, but you can if you want to.
 
-If you are using a prefix for duskmoonUI, these CSS variables will be prefixed with that prefix as well. For example if prefix is `daisy-`, The `--alert-color` CSS variable will be `--daisy-alert-color`.
+If you are using a prefix for duskmoonUI, these CSS variables will be prefixed with that prefix as well. For example if prefix is `duskmoon-`, The `--alert-color` CSS variable will be `--duskmoon-alert-color`.
 
 > :INFO:
 >

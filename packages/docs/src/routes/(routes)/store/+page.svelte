@@ -323,9 +323,9 @@
             transition:fade={{ duration: 400 }}
           >
             <div class="text-neutral-content flex w-full grow flex-col gap-1">
-              <h2 class="text-lg font-bold">daisyUI Newsletter</h2>
+              <h2 class="text-lg font-bold">duskmoonUI Newsletter</h2>
               <div class="text-neutral-content/70 text-sm [text-wrap:balance]">
-                Join the daisyUI Newsletter to get a discount code!
+                Join the duskmoonUI Newsletter to get a discount code!
               </div>
             </div>
             <form

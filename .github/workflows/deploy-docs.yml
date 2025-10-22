@@ -4,25 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       deploy_to_production:
-        description: 'Deploy to GitHub Pages (only works on main branches)'
+        description: 'Deploy to GitHub Pages (manual deployment)'
         required: false
         type: boolean
         default: false
-  push:
-    branches:
-      - master
-      - next
-    paths:
-      - "packages/docs/**"
-      - "packages/duskmoonui/**"
-      - "CHANGELOG.md"
-  pull_request:
-    branches:
-      - master
-      - next
-    paths:
-      - "packages/docs/**"
-      - "packages/duskmoonui/**"
   # Automatic deployment every 6 hours
   schedule:
     - cron: '0 */6 * * *'
@@ -101,12 +86,10 @@ jobs:
           path: packages/docs/build
           retention-days: 1
 
-  # Deploy job (only runs on main branches or manual deployment)
+  # Deploy job (only runs on manual deployment)
   deploy:
     if: |
       github.event_name != 'pull_request' && (
-        github.ref == 'refs/heads/master' ||
-        github.ref == 'refs/heads/next' ||
         github.event.inputs.deploy_to_production == 'true'
       )
     needs: build

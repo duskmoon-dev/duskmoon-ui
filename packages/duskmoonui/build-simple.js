@@ -28,7 +28,7 @@ async function copyFile(from, to, newName = null) {
 
 async function simpleBuild() {
   try {
-    console.log(`🌼 Starting simple build for daisyUI ${version}`)
+    console.log(`🌼 Starting simple build for duskmoonUI ${version}`)
     
     // Clean previous build
     if (!isDev) {
@@ -42,7 +42,7 @@ async function simpleBuild() {
     await copyFile("./functions/themePlugin.js", "./theme/themePlugin.js", "index.js")
     
     // Create a basic CSS file
-    const basicCss = `/* daisyUI ${version} - Basic Build */
+    const basicCss = `/* duskmoonUI ${version} - Basic Build */
 /* This is a minimal build for CI/CD purposes */
 `
     
@@ -50,13 +50,13 @@ async function simpleBuild() {
     await fs.writeFile("themes.css", basicCss)
     
     // Create a basic index.js
-    const indexJs = `// daisyUI ${version}
+    const indexJs = `// duskmoonUI ${version}
 // Minimal build for CI/CD
 export { default } from './theme/themePlugin.js'
 `
     await fs.writeFile("index.js", indexJs)
     
-    console.log(`✅ Simple build completed for daisyUI ${version}`)
+    console.log(`✅ Simple build completed for duskmoonUI ${version}`)
   } catch (error) {
     console.error(`❌ Build failed: ${error.message}`)
     throw error

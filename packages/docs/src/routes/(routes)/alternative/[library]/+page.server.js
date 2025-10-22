@@ -56,8 +56,8 @@ const isPositiveAttribute = (value) => {
   return typeof value === "object" && value !== null && "positive" in value
 }
 
-const checkIsDaisyUIBetter = (attribute, attributeRules, daisyValueDef, otherValueDef) => {
-  if (daisyValueDef === undefined || otherValueDef === undefined) {
+const checkIsDuskmoonUIBetter = (attribute, attributeRules, duskmoonValueDef, otherValueDef) => {
+  if (duskmoonValueDef === undefined || otherValueDef === undefined) {
     return false
   }
 
@@ -66,21 +66,21 @@ const checkIsDaisyUIBetter = (attribute, attributeRules, daisyValueDef, otherVal
     return false
   }
 
-  const daisyIsPositive = isPositiveAttribute(daisyValueDef) ? daisyValueDef.positive : undefined
+  const duskmoonIsPositive = isPositiveAttribute(duskmoonValueDef) ? duskmoonValueDef.positive : undefined
   const otherIsPositive = isPositiveAttribute(otherValueDef) ? otherValueDef.positive : undefined
 
-  if (daisyIsPositive !== undefined || otherIsPositive !== undefined) {
-    if (daisyIsPositive !== undefined && otherIsPositive !== undefined) {
-      return daisyIsPositive === true && otherIsPositive === false
-    } else if (daisyIsPositive !== undefined) {
-      return daisyIsPositive === true
+  if (duskmoonIsPositive !== undefined || otherIsPositive !== undefined) {
+    if (duskmoonIsPositive !== undefined && otherIsPositive !== undefined) {
+      return duskmoonIsPositive === true && otherIsPositive === false
+    } else if (duskmoonIsPositive !== undefined) {
+      return duskmoonIsPositive === true
     } else {
-      // otherIsPositive is defined, daisyIsPositive is not
+      // otherIsPositive is defined, duskmoonIsPositive is not
       return otherIsPositive === false
     }
   }
 
-  const val1 = getValue(daisyValueDef)
+  const val1 = getValue(duskmoonValueDef)
   const val2 = getValue(otherValueDef)
 
   if (val1 === "?" || val2 === "?" || typeof val1 !== typeof val2) {
@@ -142,7 +142,7 @@ const generateComparisonText = (
     "{depsCount}": libraryData.attributes?.Dependencies?.value ?? "N/A",
     "{otherJSSize}": libraryData.attributes?.["JavaScript size"]?.value ?? "N/A",
     "{otherFrameworks}": libraryData.attributes?.Frameworks?.value ?? "specific frameworks",
-    "{daisyThemes}": duskmoonUIData.attributes?.["Built-in Themes"]?.value ?? "many",
+    "{duskmoonThemes}": duskmoonUIData.attributes?.["Built-in Themes"]?.value ?? "many",
     "{otherThemes}": libraryData.attributes?.["Built-in Themes"]?.value ?? "few",
   }
 
@@ -177,7 +177,7 @@ const generateAllComparisons = (
   return {
     stars: generateComparisonText(
       "stars",
-      checkIsDaisyUIBetter("GitHub stars", attributeRules, duskmoonUIStarsDef, libraryStarsDef),
+      checkIsDuskmoonUIBetter("GitHub stars", attributeRules, duskmoonUIStarsDef, libraryStarsDef),
       duskmoonUIData,
       libraryData,
       stringsData,
@@ -185,7 +185,7 @@ const generateAllComparisons = (
     ),
     downloads: generateComparisonText(
       "downloads",
-      checkIsDaisyUIBetter(
+      checkIsDuskmoonUIBetter(
         "NPM downloads",
         attributeRules,
         duskmoonUIDownloadsDef,
@@ -198,7 +198,7 @@ const generateAllComparisons = (
     ),
     components: generateComparisonText(
       "components",
-      checkIsDaisyUIBetter(
+      checkIsDuskmoonUIBetter(
         "Unique components",
         attributeRules,
         duskmoonUIComponentsDef,
@@ -211,7 +211,7 @@ const generateAllComparisons = (
     ),
     dependencies: generateComparisonText(
       "dependencies",
-      checkIsDaisyUIBetter("Dependencies", attributeRules, duskmoonUIDepsDef, libraryDepsDef),
+      checkIsDuskmoonUIBetter("Dependencies", attributeRules, duskmoonUIDepsDef, libraryDepsDef),
       duskmoonUIData,
       libraryData,
       stringsData,
@@ -364,23 +364,23 @@ const filterSections = (sections, duskmoonUIData, libraryData, attributeRules, i
   return sections
     .map((section) => {
       const sectionAttributes = Array.isArray(section.attributes) ? section.attributes : []
-      const attributesWhereDaisyIsBetter = sectionAttributes.filter((attr) => {
-        const daisyAttr = duskmoonUIData.attributes?.[attr]
+      const attributesWhereDuskmoonIsBetter = sectionAttributes.filter((attr) => {
+        const duskmoonAttr = duskmoonUIData.attributes?.[attr]
         const libraryAttr = libraryData.attributes?.[attr]
         // Ensure both attributes exist before comparing
         return (
-          daisyAttr !== undefined &&
+          duskmoonAttr !== undefined &&
           libraryAttr !== undefined &&
-          isBetterFunc(attr, attributeRules, daisyAttr, libraryAttr)
+          isBetterFunc(attr, attributeRules, duskmoonAttr, libraryAttr)
         )
       })
 
       // Keep section if it's overview OR if duskmoonUI is better in at least one attribute
-      return attributesWhereDaisyIsBetter.length > 0 || section.id === "overview"
+      return attributesWhereDuskmoonIsBetter.length > 0 || section.id === "overview"
         ? {
             ...section,
             // Show only attributes where duskmoonUI is better
-            attributes: attributesWhereDaisyIsBetter,
+            attributes: attributesWhereDuskmoonIsBetter,
           }
         : null // Return null if section should be filtered out
     })
@@ -459,7 +459,7 @@ export const load = async ({ params }) => {
         "{depsCount}": libraryData.attributes?.Dependencies?.value ?? "N/A",
         "{otherJSSize}": libraryData.attributes?.["JavaScript size"]?.value ?? "N/A",
         "{otherFrameworks}": libraryData.attributes?.Frameworks?.value ?? "specific frameworks",
-        "{daisyThemes}": duskmoonUIData.attributes?.["Built-in Themes"]?.value ?? "many",
+        "{duskmoonThemes}": duskmoonUIData.attributes?.["Built-in Themes"]?.value ?? "many",
         "{otherThemes}": libraryData.attributes?.["Built-in Themes"]?.value ?? "few",
       }
 
@@ -492,7 +492,7 @@ export const load = async ({ params }) => {
       duskmoonUIData,
       libraryData,
       compareData.attributeRules,
-      checkIsDaisyUIBetter,
+      checkIsDuskmoonUIBetter,
     )
 
     // Regenerate comparisons for the final return object, ensuring consistency
