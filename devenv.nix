@@ -22,15 +22,9 @@ in
     pkgs-stable.nodejs_20  # Required for docs engine (>=20.18.1)
     pkgs-stable.bun
 
-    # CSS/Styling tools
-    pkgs-stable.tailwindcss_4
-
     # Code quality and formatting
-    pkgs-stable.prettier
+    pkgs-stable.nodePackages.prettier
     pkgs-stable.oxlint
-
-    # Build tools (for SvelteKit docs)
-    pkgs-stable.nodePackages.vite
 
     # Additional useful tools
     pkgs-stable.curl  # For API testing and downloads
