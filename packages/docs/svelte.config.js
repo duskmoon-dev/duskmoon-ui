@@ -34,7 +34,7 @@ export default {
     },
     // GitHub Pages paths
     paths: {
-      base: process.env.NODE_ENV === 'production' && process.env.CI ? '/duskmoon-dev/duskmoon-ui' : ''
+      base: process.env.NODE_ENV === 'production' && process.env.CI ? '/duskmoon-ui' : ''
     }
   },
   onwarn: (warning, handler) => {
