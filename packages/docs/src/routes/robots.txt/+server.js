@@ -2,7 +2,9 @@ import { dev } from '$app/environment'
 
 const BASE_URL = 'https://duskmoonui.com'
 
-export const prerender = true
+// Disable prerendering - this will be generated on-demand
+// Prerendering fails because this route isn't discovered during crawling
+export const prerender = false
 
 export function GET() {
   // Enhanced robots.txt for better SEO
