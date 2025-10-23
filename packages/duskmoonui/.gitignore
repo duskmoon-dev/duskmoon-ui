@@ -3,7 +3,8 @@
 /colors
 /components
 /utilities
-/theme
+/theme/themePlugin.js
+/theme/variables.js
 
 /imports.js
 
