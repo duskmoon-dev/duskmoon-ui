@@ -34,33 +34,33 @@ interface Theme {
 
 
 interface Themes {
+  coffee: Theme
   forest: Theme
+  aqua: Theme
   black: Theme
   luxury: Theme
-  cupcake: Theme
-  night: Theme
-  dark: Theme
-  fantasy: Theme
-  coffee: Theme
-  lemonade: Theme
-  abyss: Theme
   business: Theme
-  duskmoon-light: Theme
-  valentine: Theme
+  dark: Theme
+  cupcake: Theme
   pastel: Theme
-  aqua: Theme
-  autumn: Theme
-  cmyk: Theme
+  night: Theme
+  abyss: Theme
+  caramellatte: Theme
+  silk: Theme
   nord: Theme
-  duskmoon-dark: Theme
+  fantasy: Theme
+  cmyk: Theme
   retro: Theme
   sunset: Theme
-  silk: Theme
-  caramellatte: Theme
-  dracula: Theme
-  wireframe: Theme
   lofi: Theme
   emerald: Theme
+  duskmoon-light: Theme
+  valentine: Theme
+  autumn: Theme
+  lemonade: Theme
+  dracula: Theme
+  duskmoon-dark: Theme
+  wireframe: Theme
   winter: Theme
   halloween: Theme
   dim: Theme
@@ -68,9 +68,9 @@ interface Themes {
   garden: Theme
   corporate: Theme
   light: Theme
+  cyberpunk: Theme
   synthwave: Theme
   bumblebee: Theme
-  cyberpunk: Theme
   [key: string]: Theme
 }
 

@@ -6,6 +6,9 @@
 
 /theme/themePlugin.js
 /theme/variables.js
+/theme/*.css
+/theme/object.js
+/theme/object.d.ts
 
 /imports.js
 
