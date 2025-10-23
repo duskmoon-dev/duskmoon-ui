@@ -373,7 +373,6 @@
                 height="72"
                 alt="yawing face emoji"
                 src=""
-                srcset={`
                 class="pointer-events-none inline-block h-[1em] w-[1em] align-bottom"
               />
             </h2>
@@ -410,7 +409,6 @@
                     height="72"
                     alt="sunglasses emoji"
                     src=""
-                    srcset={`
                     class="pointer-events-none inline-block h-[1em] w-[1em] align-bottom"
                   />
                 </h2>
@@ -1641,7 +1639,7 @@
               [1, 0],
             )}rem);`}
             alt={`duskmoonUI ${logo}`}
-            src={`
+            src=""
           />
         {/each}
       </div>
@@ -2072,7 +2070,7 @@
             width="96"
             height="96"
             class="aspect-square h-10 w-10"
-            src={`
+            src=""
             alt={`duskmoonUI ${logo}`}
           />
         {/each}
