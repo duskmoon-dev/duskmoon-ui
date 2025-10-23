@@ -21,6 +21,7 @@ const isDev = process.argv.includes("--dev")
 async function generateFiles() {
   await Promise.all([
     copyFile("./functions/themePlugin.js", "./theme/themePlugin.js", "index.js"),
+    copyFile("./functions/variables.js", "./theme/variables.js"),
 
     !isDev &&
       generateColorRules({

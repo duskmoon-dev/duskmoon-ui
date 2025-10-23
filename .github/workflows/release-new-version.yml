@@ -37,11 +37,7 @@ jobs:
         run: bun i
 
       - name: Build package
-        run: |
-          cd packages/duskmoonui
-          bun run prebuild
-          cd ../..
-          bun run --bun build
+        run: bun run --bun build
 
       - name: Config Git
         run: |

@@ -39,11 +39,7 @@ jobs:
         run: bun i
 
       - name: build package
-        run: |
-          cd packages/duskmoonui
-          bun run prebuild
-          cd ../..
-          bun run --bun build
+        run: bun run --bun build
 
       - name: Run tests
         run: |
