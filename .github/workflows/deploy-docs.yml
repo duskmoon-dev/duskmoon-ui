@@ -52,6 +52,18 @@ jobs:
           bun run build
           echo "✅ duskmoonui build completed"
 
+      - name: Verify theme files exist
+        run: |
+          echo "🔍 Verifying theme files..."
+          ls -la packages/duskmoonui/theme/
+          if [ -f "packages/duskmoonui/theme/variables.js" ]; then
+            echo "✅ variables.js exists"
+            head -5 packages/duskmoonui/theme/variables.js
+          else
+            echo "❌ variables.js not found"
+            exit 1
+          fi
+
       - name: Build docs
         id: build
         run: |
