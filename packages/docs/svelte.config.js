@@ -28,6 +28,9 @@ export default {
         console.warn(`HTTP error during prerender: ${path} (${status})`)
         return "ignore"
       },
+      // Don't fail build if some prerenderable routes aren't found during crawling
+      // This allows dynamic routes with empty entries() to be skipped gracefully
+      onError: 'continue',
       // Optimize for GitHub Pages deployment
       concurrency: 5,
       crawl: true

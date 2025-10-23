@@ -1,6 +1,27 @@
 import { error } from "@sveltejs/kit"
 import { dirname } from "node:path"
 
+export async function entries() {
+  // Generate list of all unique tags from blog posts
+  const posts = await Promise.all(
+    Object.entries(import.meta.glob("./../../[(]posts[)]/*/+page.md")).map(
+      async ([path, resolver]) => {
+        const { metadata } = await resolver()
+        if (!metadata.published) {
+          return null
+        }
+        return metadata.tags || []
+      },
+    ),
+  )
+
+  // Flatten and get unique tags
+  const allTags = [...new Set(posts.filter(Boolean).flat())]
+  const normalizedTags = allTags.map((tag) => tag.replace(/ /g, "-").toLowerCase())
+
+  return [...new Set(normalizedTags)].map((tag) => ({ tag }))
+}
+
 export async function load({ params }) {
   // Explicitly reference params.tag to ensure reactivity
   const currentTag = params.tag
