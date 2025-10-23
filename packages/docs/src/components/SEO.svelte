@@ -3,10 +3,13 @@
   import { page } from "$app/state"
   import { langs } from "$lib/i18n.svelte.js"
 
+  // Use GitHub Pages URL for demo deployment
+  const baseUrl = import.meta.env.DEV ? "" : "https://duskmoon-dev.github.io/duskmoon-ui"
+
   let siteData = {
     title: "Tailwind CSS Components ( version 5 update is here )",
     desc: "Free Tailwind Components",
-    card: "https://img.duskmoonui.com/images/default.webp",
+    card: "", // No default image for GitHub Pages deployment
   }
   let { formatTitle = true, title = "", desc = siteData.desc, img = siteData.card } = $props()
 
@@ -31,10 +34,10 @@
     if (match) {
       const [, first, second] = match
       const [smaller, larger] = [first, second].sort()
-      return `https://duskmoonui.com/compare/${smaller}-vs-${larger}/`
+      return `${baseUrl}/compare/${smaller}-vs-${larger}/`
     }
 
-    return `https://duskmoonui.com${pathname}`
+    return `${baseUrl}${pathname}`
   }
 </script>
 
@@ -57,7 +60,7 @@
     <link
       rel="alternate"
       hreflang={iso15924to31661(lang)}
-      href={`https://duskmoonui.com${page.url.pathname}?lang=${lang}`}
+      href={`${baseUrl}${page.url.pathname}?lang=${lang}`}
     />
   {/each}
 </svelte:head>

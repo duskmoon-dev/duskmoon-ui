@@ -25,7 +25,7 @@
           <figure class="px-4 pt-4">
             <img
               loading="lazy"
-              src={`https://img.duskmoonui.com/images/components/${slug}.webp`}
+              src={`
               class="border-base-content/5 bg-base-300 rounded-lg border"
               alt={title}
             />

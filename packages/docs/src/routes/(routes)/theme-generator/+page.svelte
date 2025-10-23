@@ -423,7 +423,7 @@
 <SEO
   title="duskmoonUI and Tailwind CSS theme generator"
   desc="OKLCH Theme Generator for duskmoonUI and Tailwind CSS"
-  img={`https://img.duskmoonui.com/images/theme-generator.webp`}
+  img={`
 />
 
 <div class="relative grid md:grid-cols-[14rem_17rem_1fr]">
