@@ -30,7 +30,9 @@ export default {
       },
       // Optimize for GitHub Pages deployment
       concurrency: 5,
-      crawl: true
+      crawl: true,
+      // Explicitly include routes that won't be discovered by crawling
+      entries: ['*', '/robots.txt']
     },
     // GitHub Pages paths
     paths: {
